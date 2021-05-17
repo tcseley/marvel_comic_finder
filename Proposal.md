@@ -4,7 +4,7 @@ Requirements for the weekend
 
 `1` An application name / concept:
 
---Comic Book Keeper is a database to 
+--Comic Book Keeper is a database to find related comics from a user collection.
 
 `2` A repo for your project 2 (built from express_auth template):
 
