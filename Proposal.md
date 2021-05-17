@@ -32,7 +32,7 @@ Requirements for the weekend
 
 - ~~In the mornings when there a lot of people who use the pool I'd like to know if there was an open lane at the pool before I drive over to the gym, and I'd like to be able to reserve it by placing a HOLD on it which would expire after a set number of minutes.~~
 
--Since I have a large comic book collection, I'd like to be able to upload an image and some info on each book to a site, and find connections to other stories that the character would be in.
+- Since I have a large comic book collection, I'd like to be able to upload an image and some info on each book to a site, and find connections to other stories that the character would be in.
 
 
 `6` Resource's Restful Routing table ( [Readme](https://romebell.gitbook.io/sei-412/node-express/00readme-1/01intro-to-express/00readme#restful-routing) )
