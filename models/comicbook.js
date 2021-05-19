@@ -17,9 +17,10 @@ module.exports = (sequelize, DataTypes) => {
   };
   comicbook.init({
     title: DataTypes.STRING,
-    creator: DataTypes.STRING,
-    year: DataTypes.INTEGER,
-    event: DataTypes.STRING,
+    creators: DataTypes.STRING,
+    issueNumber: DataTypes.INTEGER,
+    image: DataTypes.STRING,
+    description: DataTypes.STRING,
     series: DataTypes.STRING,
     //superheroId: DataTypes.INTEGER,
     //userId: DataTypes.INTEGER

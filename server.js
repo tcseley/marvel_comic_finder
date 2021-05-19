@@ -7,8 +7,10 @@ const session = require('express-session');
 const passport = require('./config/ppConfig');
 const isLoggedIn = require('./middleware/isLoggedIn');
 
+const publickey = process.env.PUBLIC_KEY;
+const privatekey = process.env.PRIVATE_KEY;
 const SECRET_SESSION = process.env.SECRET_SESSION;
-//console.log(SECRET_SESSION);
+
 
 app.set('view engine', 'ejs');
 
@@ -49,7 +51,6 @@ app.post('/comic', isLoggedIn, (req, res) => {
   const { id, name, email } = req.user.get();
   res.render('comic');
 });
-
 
 
 

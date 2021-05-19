@@ -14,10 +14,13 @@ module.exports = {
       creator: {
         type: Sequelize.STRING
       },
-      year: {
+      issueNumber: {
         type: Sequelize.INTEGER
       },
-      event: {
+      description: {
+        type: Sequelize.STRING
+      },
+      image: {
         type: Sequelize.STRING
       },
       series: {

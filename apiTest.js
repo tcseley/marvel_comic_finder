@@ -23,11 +23,21 @@ axios.get('http://gateway.marvel.com/v1/public/comics', {
         hash: hash,
     }
 })
-.then(response => {
-//const character = response.data.data.results[0].characters.collectionURI;
-console.log(response.data.data.results[2].characters);
-    
+    .then(response => {
+        let data = response.data.data.results
+        for (let i = 0; i < data.length; i++) {
+            let comic = data[i];
+            console.log(comic.thumbnail);
+            let image = comic.thumbnail.path+comic.thumbnail.extension
+        }
+        //const character = response.data.data.results[0].characters.collectionURI;
+        //console.log(response.data.data.results[0].creators.items[0].name);
+        // console.log(response.data.data.results[10].thumbnail);
+        // let image = response.data.data.results[10].thumbnail.path+response.data.data.results[10].thumbnail.extension (study these, reverse engineer)
 })
 .catch(error => {
-console.log(error);
+    console.log(error);
 });
+
+// In Comic model:
+//Title, issue#, description, series.name, image    
