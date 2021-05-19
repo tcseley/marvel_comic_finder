@@ -47,6 +47,8 @@ app.get('/profile', isLoggedIn, (req, res) => {
 
 
 
+
+
 app.use('/auth', require('./controllers/auth'));
 
 
