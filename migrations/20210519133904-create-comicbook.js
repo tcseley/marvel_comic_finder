@@ -23,12 +23,12 @@ module.exports = {
       series: {
         type: Sequelize.STRING
       },
-      superheroId: {
-        type: Sequelize.INTEGER
-      },
-      userId: {
-        type: Sequelize.INTEGER
-      },
+      // // superheroId: {
+      // //   type: Sequelize.INTEGER
+      // },
+      // userId: {
+      //   type: Sequelize.INTEGER
+      // },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
