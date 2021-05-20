@@ -2,7 +2,7 @@ const axios = require('axios');
 const md5 = require('md5');
 const { serializeUser } = require('passport');
 const db = require('./models');
-const comicbook = require('./models/comicbook');
+const comicbook = require('./models/comicbooks');
 
 // axios.get('http://gateway.marvel.com/v1/public/comics?apikey=120eb71cf4f4ec6cdb75ad8eb1800b0f')
 //     .then(response => {
@@ -38,6 +38,16 @@ axios.get('http://gateway.marvel.com/v1/public/comics', {
 .catch(error => {
     console.log(error);
 });
+
+db.comicbooks.create({
+  title: 'Xmen'
+}).then(function(team) {
+  console.log('Created: ', team.xmen)
+})
+
+db.comicbook.findAll().then(function(team) {
+  console.log('Found: ', team.xmen)
+})
 
 // In Comic model:
 //Title, issue#, description, series.name, image    

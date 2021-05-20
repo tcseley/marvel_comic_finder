@@ -11,7 +11,7 @@ module.exports = {
       title: {
         type: Sequelize.STRING
       },
-      creator: {
+      creators: {
         type: Sequelize.STRING
       },
       issueNumber: {

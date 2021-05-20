@@ -9,7 +9,7 @@ const passport = require('./config/ppConfig');
 const isLoggedIn = require('./middleware/isLoggedIn');
 const md5 = require('md5');
 //const { serializeUser } = require('passport');
-//const db = require('./models');
+const db = require('./models');
 //const comicbook = require('./models/comicbook');
 
 const publickey = process.env.PUBLIC_KEY;
@@ -84,8 +84,12 @@ app.get('/results', (req, res) =>{
   })
   .then(response => {
     console.log(response.data);
-    const comics = response.data.search;
-    console.log(comics);
+    let data = response.data.data.results;
+    for (let i = 0; i < data.length; i++) {
+        let comic = data[i];
+        console.log(comic.thumbnail);
+        let image = comic.thumbnail.path + comic.thumbnail.extension;
+    }
     res.render('results');
   })
   .catch (error => {
@@ -93,13 +97,21 @@ app.get('/results', (req, res) =>{
   });
 });
 
-// app.get('/movies/:movie_id', (req, res) => {
-//   const movieId = req.params.movie_id;
-//   axios.get(`http://www.omdbapi.com/?i=${movieId}&apikey=${API_KEY}`)
+
+
+// app.get('/details/:idx', (req, res) => {
+//   const comicId = req.params.comic.title;
+//   axios.get('http://gateway.marvel.com/v1/public/comics', {
+//     params: {
+//         ts: ts,
+//         apikey: publickey,
+//         hash: hash,
+//     }
+//   })
 //     .then(response => {
 //       console.log(response.data);
-//       const movieDetails = response.data;
-//       res.render('detail', {movie:movieDetails});
+//       const comicbookId = response.data;
+//       res.render('details', {comic:title});
 //     })
 //     .catch(error => {
 //       console.log(error);
