@@ -2,14 +2,22 @@ require('dotenv').config();
 const express = require('express');
 const layouts = require('express-ejs-layouts');
 const app = express();
+const axios = require('axios');
 const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('./config/ppConfig');
 const isLoggedIn = require('./middleware/isLoggedIn');
+const md5 = require('md5');
+//const { serializeUser } = require('passport');
+//const db = require('./models');
+//const comicbook = require('./models/comicbook');
 
 const publickey = process.env.PUBLIC_KEY;
 const privatekey = process.env.PRIVATE_KEY;
 const SECRET_SESSION = process.env.SECRET_SESSION;
+
+let ts = 'hello';
+const hash = md5(ts + privatekey + publickey);
 
 
 app.set('view engine', 'ejs');
@@ -37,26 +45,72 @@ app.use((req, res, next) => {
 });
 
 
+
 app.get('/', isLoggedIn, (req, res) => {
   const { id, name, email } = req.user.get();
   res.render('index');
 });
+
 
 app.get('/profile', isLoggedIn, (req, res) => {
   const { id, name, email } = req.user.get();
   res.render('profile', { id, name, email });
 });
 
-app.post('/comic', isLoggedIn, (req, res) => {
+app.get('/favorites', isLoggedIn, (req, res) => {
   const { id, name, email } = req.user.get();
-  res.render('comic');
+  res.render('favorites', { id, name, email });
 });
 
+// app.get('/comic', (req, res) => {
+//   res.send("Search results here");
+// });
+// app.get("/results", (req, res) => {
+//   let printout = '';
+//   for (let key in req.query) {
+//     printout += key + ": " + req.query[key] + "<br />";
+//   }
+//   res.send("Here's what was searched: <br /><br />" + printout);
+// });
+app.get('/results', (req, res) =>{
+  const search = req.query['q'];
+  console.log(search);
+  axios.get('http://gateway.marvel.com/v1/public/comics', {
+    params: {
+        ts: ts,
+        apikey: publickey,
+        hash: hash,
+    }
+  })
+  .then(response => {
+    console.log(response.data);
+    const comics = response.data.search;
+    console.log(comics);
+    res.render('results');
+  })
+  .catch (error => {
+    console.log(error);
+  });
+});
 
+// app.get('/movies/:movie_id', (req, res) => {
+//   const movieId = req.params.movie_id;
+//   axios.get(`http://www.omdbapi.com/?i=${movieId}&apikey=${API_KEY}`)
+//     .then(response => {
+//       console.log(response.data);
+//       const movieDetails = response.data;
+//       res.render('detail', {movie:movieDetails});
+//     })
+//     .catch(error => {
+//       console.log(error);
+//     });
+// });
 
+  
+  
 app.use('/auth', require('./controllers/auth'));
-
-
+  
+  
 const PORT = process.env.PORT || 3000;
 const server = app.listen(PORT, () => {
   console.log(`With great power, comes great responsibility on port ${PORT} `);
