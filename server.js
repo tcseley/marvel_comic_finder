@@ -16,7 +16,7 @@ const publickey = process.env.PUBLIC_KEY;
 const privatekey = process.env.PRIVATE_KEY;
 const SECRET_SESSION = process.env.SECRET_SESSION;
 
-let ts = 'hello';
+let ts = String(new Date());
 const hash = md5(ts + privatekey + publickey);
 
 
@@ -51,7 +51,6 @@ app.get('/', isLoggedIn, (req, res) => {
   res.render('index');
 });
 
-
 app.get('/profile', isLoggedIn, (req, res) => {
   const { id, name, email } = req.user.get();
   res.render('profile', { id, name, email });
@@ -73,9 +72,10 @@ app.get('/favorites', isLoggedIn, (req, res) => {
 //   res.send("Here's what was searched: <br /><br />" + printout);
 // });
 app.get('/results', (req, res) =>{
-  const search = req.query['q'];
+  const search = req.query.search;
+  //console.log("Here is search", search);
   console.log(search);
-  axios.get('http://gateway.marvel.com/v1/public/comics', {
+  axios.get('https://gateway.marvel.com/v1/public/comics/', {
     params: {
         ts: ts,
         apikey: publickey,
@@ -83,17 +83,17 @@ app.get('/results', (req, res) =>{
     }
   })
   .then(response => {
-    console.log(response.data);
-    let data = response.data.data.results;
-    for (let i = 0; i < data.length; i++) {
-        let comic = data[i];
-        console.log(comic.thumbnail);
-        let image = comic.thumbnail.path + comic.thumbnail.extension;
-    }
+     //console.log("Here is response", response.data);
+     let data = response.data.data.results;
+     for (let i = 0; i < data.length; i++) {
+         let comic = data[i];
+         console.log(comic.thumbnail);
+         let image = comic.thumbnail.path + comic.thumbnail.extension;
+     }
     res.render('results');
   })
   .catch (error => {
-    console.log(error);
+     console.log(error);
   });
 });
 
