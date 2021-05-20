@@ -71,31 +71,31 @@ app.get('/favorites', isLoggedIn, (req, res) => {
 //   }
 //   res.send("Here's what was searched: <br /><br />" + printout);
 // });
-app.get('/results', (req, res) =>{
-  const search = req.query.search;
-  //console.log("Here is search", search);
-  console.log(search);
-  axios.get('https://gateway.marvel.com/v1/public/comics/', {
-    params: {
-        ts: ts,
-        apikey: publickey,
-        hash: hash,
-    }
-  })
-  .then(response => {
-     //console.log("Here is response", response.data);
-     let data = response.data.data.results;
-     for (let i = 0; i < data.length; i++) {
-         let comic = data[i];
-         console.log(comic.thumbnail);
-         let image = comic.thumbnail.path + comic.thumbnail.extension;
-     }
-    res.render('results');
-  })
-  .catch (error => {
-     console.log(error);
-  });
-});
+// app.get('/results', (req, res) =>{
+//   const search = req.query.search;
+//   //console.log("Here is search", search);
+//   console.log(search);
+//   axios.get('https://gateway.marvel.com/v1/public/comics/', {
+//     params: {
+//         ts: ts,
+//         apikey: publickey,
+//         hash: hash,
+//     }
+//   })
+//   .then(response => {
+//      //console.log("Here is response", response.data);
+//      let data = response.data.data.results;
+//      for (let i = 0; i < data.length; i++) {
+//          let comic = data[i];
+//          console.log(comic.thumbnail);
+//          let image = comic.thumbnail.path + comic.thumbnail.extension;
+//      }
+//     res.render('results');
+//   })
+//   .catch (error => {
+//      console.log(error);
+//   });
+// });
 
 
 
