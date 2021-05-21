@@ -84,7 +84,6 @@ app.get('/results', (req, res) => {
           comicImg = `${images.path}.${images.extension}`;
           comicImgs.push(comicImg);
         })
-        
       }
 
       res.render('results', { 'data': comicImgs });
