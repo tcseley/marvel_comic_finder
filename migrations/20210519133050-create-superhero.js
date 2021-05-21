@@ -20,6 +20,9 @@ module.exports = {
       series: {
         type: Sequelize.STRING
       },
+      character: {
+        type: Sequelize.STRING
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

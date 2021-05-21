@@ -26,6 +26,9 @@ module.exports = {
       series: {
         type: Sequelize.STRING
       },
+      year: {
+        type: Sequelize.INTEGER
+      },
       // // superheroId: {
       // //   type: Sequelize.INTEGER
       // },

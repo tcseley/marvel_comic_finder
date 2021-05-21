@@ -39,16 +39,16 @@
 //     console.log(error);
 // });
 
-// db.comicbooks.create({
-//   title: 'Avengers'
-// }).then(function(team) {
-//     console.log('Created: ', team.title);
-// });
+db.comicbooks.create({
+  title: 'Avengers'
+}).then(function(team) {
+    console.log('Created: ', team.title);
+});
 
-// db.comicbooks.findAll()
-//     .then(function (team) {
-//     console.log('Found: ', team.title);
-// });
+db.comicbooks.findAll()
+    .then(function (team) {
+    console.log('Found: ', team.title);
+});
 
 // In Comic model:
 //Title, issue#, description, series.name, image    
