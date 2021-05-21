@@ -16,7 +16,7 @@ const publickey = process.env.PUBLIC_KEY;
 const privatekey = process.env.PRIVATE_KEY;
 const SECRET_SESSION = process.env.SECRET_SESSION;
 
-let ts = String(new Date());
+let ts = new Date();
 const hash = md5(ts + privatekey + publickey);
 
 
@@ -45,7 +45,6 @@ app.use((req, res, next) => {
 });
 
 
-
 app.get('/', isLoggedIn, (req, res) => {
   const { id, name, email } = req.user.get();
   res.render('index');
@@ -61,64 +60,21 @@ app.get('/favorites', isLoggedIn, (req, res) => {
   res.render('favorites', { id, name, email });
 });
 
-// app.get('/comic', (req, res) => {
-//   res.send("Search results here");
-// });
-// app.get("/results", (req, res) => {
-//   let printout = '';
-//   for (let key in req.query) {
-//     printout += key + ": " + req.query[key] + "<br />";
-//   }
-//   res.send("Here's what was searched: <br /><br />" + printout);
-// });
-// app.get('/results', (req, res) =>{
-//   const search = req.query.search;
-//   //console.log("Here is search", search);
-//   console.log(search);
-//   axios.get('https://gateway.marvel.com/v1/public/comics/', {
-//     params: {
-//         ts: ts,
-//         apikey: publickey,
-//         hash: hash,
-//     }
-//   })
-//   .then(response => {
-//      //console.log("Here is response", response.data);
-//      let data = response.data.data.results;
-//      for (let i = 0; i < data.length; i++) {
-//          let comic = data[i];
-//          console.log(comic.thumbnail);
-//          let image = comic.thumbnail.path + comic.thumbnail.extension;
-//      }
-//     res.render('results');
-//   })
-//   .catch (error => {
-//      console.log(error);
-//   });
-// });
 
+app.get('/results', (req, res) => {
+  const marvelUrl = 'http://gateway.marvel.com/v1/public/comics'
+  axios.get(marvelUrl, { params: {
+      ts: ts,
+      apikey: publickey,
+      hash: hash,
+    }
+})
+    .then(response => {
+      let data = response.data;
+      console.log(data)
+  })
+})
 
-
-// app.get('/details/:idx', (req, res) => {
-//   const comicId = req.params.comic.title;
-//   axios.get('http://gateway.marvel.com/v1/public/comics', {
-//     params: {
-//         ts: ts,
-//         apikey: publickey,
-//         hash: hash,
-//     }
-//   })
-//     .then(response => {
-//       console.log(response.data);
-//       const comicbookId = response.data;
-//       res.render('details', {comic:title});
-//     })
-//     .catch(error => {
-//       console.log(error);
-//     });
-// });
-
-  
   
 app.use('/auth', require('./controllers/auth'));
   
@@ -129,4 +85,4 @@ const server = app.listen(PORT, () => {
 });
 
 module.exports = server;
-
+  
