@@ -1,9 +1,8 @@
-var express = require('express')
-var db = require('../models')
-var router = express.Router()
+const express = require('express')
+const db = require('../models')
+const router = express.Router()
+const isLoggedIn = require('./middleware/isLoggedIn');
 
 
-router.get('/details', isLoggedIn, (req, res) => {
-    const { id, name, email } = req.user.get();
-    res.render('details', { id, name, email });
-});
+
+module.exports = router;

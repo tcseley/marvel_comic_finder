@@ -1,15 +1,10 @@
-var express = require('express')
-var db = require('../models')
-var router = express.Router()
+const express = require('express')
+const db = require('../models')
+const router = express.Router()
+const isLoggedIn = require('./middleware/isLoggedIn');
+//const router = require("./auth");
 
 
-const db = require("../models");
-const router = require("./auth");
-
-router.get('/favorites', isLoggedIn, (req, res) => {
-    const { id, name, email } = req.user.get();
-    res.render('favorites', { id, name, email });
-});
 
 // router.post('favorites', isLoggedIn(req, res)) => {
 //     console.log(req.body)
@@ -27,3 +22,5 @@ router.get('/favorites', isLoggedIn, (req, res) => {
 //       .then(function (team) {
 //       console.log('Found: ', team.title);
 //   });
+
+module.exports = router;

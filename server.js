@@ -20,6 +20,7 @@ const SECRET_SESSION = process.env.SECRET_SESSION;
 let ts = new Date().getTime();
 const hash = md5(ts + privatekey + publickey);
 
+
 app.set('view engine', 'ejs');
 
 app.use(methodOverride('_method'));
@@ -42,9 +43,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/results', require('./controllers/results'));
-app.use('/details', require('./controllers/details'));
-app.use('/favorites', require('./controllers/favorites'));
+// app.use('/results', require('./controllers/results'));
+// app.use('/details', require('./controllers/details'));
+// app.use('/favorites', require('./controllers/favorites'));
 
 app.get('/', isLoggedIn, (req, res) => {
   const { id, name, email } = req.user.get();
@@ -56,18 +57,46 @@ app.get('/profile', isLoggedIn, (req, res) => {
   res.render('profile', { id, name, email });
 });
 
-
-
+app.get('/results', isLoggedIn, (req, res) => {
+    const { id, name, email } = req.user.get();
+    const marvelUrl = 'https://gateway.marvel.com:443/v1/public/comics'
+    axios.get(marvelUrl, {
+        params: {
+            ts: ts,
+            apikey: publickey,
+            hash: hash,
+        }
+    })
+    .then(response => {
+        let data = response.data.data.results;
+        console.log(data[0].id);
+        let comic;
+        let comicImgs = [];
+        for (let i = 0; i < data.length; i++) {
+            // console.log(data[i].images);
+            comic = data[i].images;
+            comic.map((images) => {
+                const comicData = {};
+                //console.log(`${images.path}.${images.extension}`);
+                comicData.comicImg = `${images.path}.${images.extension}`;
+                comicData.id = data[i].id;
+                comicImgs.push(comicData);
+    
+            })
+        } console.log(comicImgs);
+        res.render('results', { 'data': comicImgs });
+    }) 
+});
 
 app.get('/favorites', isLoggedIn, (req, res) => {
     const { id, name, email } = req.user.get();
     res.render('favorites', { id, name, email });
 });
-    
 
-
-
-
+app.get('/details', isLoggedIn, (req, res) => {
+    const { id, name, email } = req.user.get();
+    res.render('details', { id, name, email });
+});
 
 app.use('/auth', require('./controllers/auth'));
 
