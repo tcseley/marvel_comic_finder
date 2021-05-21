@@ -5,3 +5,11 @@
 <p>Id: <%= id %> </p>
 <p>Name: <%= name %> </p>
 <p>Email: <%= email %> </p>
+<br>
+<section class="comic-images-container">
+    <% data.forEach(function(image) { %>
+    <img src=<%= image %> />
+    <% }) %>
+  </section>
+
+  

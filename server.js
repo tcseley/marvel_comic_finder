@@ -8,36 +8,33 @@ const session = require('express-session');
 const passport = require('./config/ppConfig');
 const isLoggedIn = require('./middleware/isLoggedIn');
 const md5 = require('md5');
-//const { serializeUser } = require('passport');
+const methodOverride = require('method-override')
 const db = require('./models');
-//const comicbook = require('./models/comicbook');
+//const { all } = require('sequelize/types/lib/operators');
+
 
 const publickey = process.env.PUBLIC_KEY;
 const privatekey = process.env.PRIVATE_KEY;
 const SECRET_SESSION = process.env.SECRET_SESSION;
 
-
 let ts = new Date().getTime();
 const hash = md5(ts + privatekey + publickey);
 
-
 app.set('view engine', 'ejs');
 
+app.use(methodOverride('_method'));
 app.use(require('morgan')('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 app.use(layouts);
-
 app.use(session({
   secret: SECRET_SESSION,
   resave: false,
   saveUninitialized: true
 }));
 app.use(flash());
-
 app.use(passport.initialize());
 app.use(passport.session());
-
 app.use((req, res, next) => {
   console.log(res.locals);
   res.locals.alerts = req.flash();
@@ -45,6 +42,9 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use('/results', require('./controllers/results'));
+app.use('/details', require('./controllers/details'));
+app.use('/favorites', require('./controllers/favorites'));
 
 app.get('/', isLoggedIn, (req, res) => {
   const { id, name, email } = req.user.get();
@@ -56,39 +56,17 @@ app.get('/profile', isLoggedIn, (req, res) => {
   res.render('profile', { id, name, email });
 });
 
+
+
+
 app.get('/favorites', isLoggedIn, (req, res) => {
-  const { id, name, email } = req.user.get();
-  res.render('favorites', { id, name, email });
+    const { id, name, email } = req.user.get();
+    res.render('favorites', { id, name, email });
 });
+    
 
 
-app.get('/results', (req, res) => {
-  const marvelUrl = 'https://gateway.marvel.com:443/v1/public/comics'
-  axios.get(marvelUrl, {
-    params: {
-      ts: ts,
-      apikey: publickey,
-      hash: hash,
-    }
-  })
-    .then(response => {
-      let data = response.data.data.results;
-      let comic;
-      let comicImgs = [];
-      for (let i = 0; i < data.length; i++) {
-        // console.log(data[i].images);
-        comic = data[i].images;
-        comic.map((images) => {
-          // console.dir(images);
-          console.log(`${images.path}.${images.extension}`);
-          comicImg = `${images.path}.${images.extension}`;
-          comicImgs.push(comicImg);
-        })
-      }
 
-      res.render('results', { 'data': comicImgs });
-    })
-})
 
 
 app.use('/auth', require('./controllers/auth'));
