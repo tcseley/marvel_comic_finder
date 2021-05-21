@@ -7,3 +7,16 @@ nav ul li {
 h1 {
   color: chartreuse;
 }
+
+.comic-images-container {
+  display: flex;
+  justify-content: center;
+    flex-wrap: wrap;
+}
+
+.comic-images-container img {
+    flex: 1 31%;
+    max-width: 31%;
+    box-shadow: 0 4px 10px rgb(0 0 0 / 40%);
+    margin: 10px 20px;
+}

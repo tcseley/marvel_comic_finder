@@ -1,11 +1,7 @@
 <h3>Search for your favorite comics from the Marvel Universe</h3>
 
-<!-- <form action="/comic" method="POST">
-    <label for="comic">search comic title</label>
-    <input id="comic" type="text" name="comic">
-  
-    <label for="superhero">search superhero</label>
-    <input id="superhero" type="text" name="superhero">
-  
-    <input type="submit" value="'nuff said">
-  </form> -->
+<section class="comic-images-container">
+  <% data.forEach(function(image) { %>
+  <img src=<%= image %> />
+  <% }) %>
+</section>
