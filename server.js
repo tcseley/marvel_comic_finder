@@ -58,7 +58,7 @@ app.get('/profile', isLoggedIn, (req, res) => {
   res.render('profile', { id, name, email });
 });
 
-app.get('/results', isLoggedIn, (req, res) => {
+app.get('/comics', isLoggedIn, (req, res) => {
     const { id, name, email } = req.user.get();
     const marvelUrl = 'https://gateway.marvel.com:443/v1/public/comics'
     axios.get(marvelUrl, {
@@ -84,14 +84,10 @@ app.get('/results', isLoggedIn, (req, res) => {
                 comicImgs.push(comicData);
             })
         } console.log(comicImgs);
-        res.render('results', { 'data': comicImgs });
+        res.render('comics', { 'data': comicImgs });
     }) 
 });
 
-app.get('/favorites', isLoggedIn, (req, res) => {
-    const { id, name, email } = req.user.get();
-    res.render('favorites', { id, name, email });
-});
 
 app.get('/details', isLoggedIn, (req, res) => {
     const { id, name, email } = req.user.get();
