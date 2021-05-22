@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
-const layouts = require('express-ejs-layouts');
 const app = express();
+const layouts = require('express-ejs-layouts');
 const axios = require('axios');
 const flash = require('connect-flash');
 const session = require('express-session');
@@ -11,6 +11,9 @@ const md5 = require('md5');
 const methodOverride = require('method-override')
 const db = require('./models');
 //const { all } = require('sequelize/types/lib/operators');
+const path = require('path');
+
+const profile = require('./routes/profile');
 
 
 const publickey = process.env.PUBLIC_KEY;
@@ -23,6 +26,7 @@ const hash = md5(ts + privatekey + publickey);
 
 app.set('view engine', 'ejs');
 
+app.use('./routes/profile', profile);
 app.use(methodOverride('_method'));
 app.use(require('morgan')('dev'));
 app.use(express.urlencoded({ extended: false }));
@@ -43,13 +47,6 @@ app.use((req, res, next) => {
   next();
 });
 
-//const router = require("./auth");
-// app.use('/results', require('./controllers/results'));
-// app.use('/details', require('./controllers/details'));
-// app.use('/favorites', require('./controllers/favorites'));
-
-
-
 //////////////////// ***** ROUTES ***** /////////////////////
 
 
@@ -67,35 +64,35 @@ app.get('/profile', isLoggedIn, (req, res) => {
   res.render('profile', { id, name, email });
 });
 
-// GET profile new /profile/new
-app.get('/profile/new', (req, res) => {
-    res.send('NEW profile/new');
-});
+// // GET profile new /profile/new
+// app.get('/profile/new', (req, res) => {
+//     res.send('NEW profile/new');
+// });
 
-// POST profile create /profile
-app.post('/profile', (req, res) => {
-    res.send('CREATE profile');
-});
+// // POST profile create /profile
+// app.post('/profile', (req, res) => {
+//     res.send('CREATE profile');
+// });
 
-// GET profile show /profile/:id
-app.get('/profile/:id', (req, res) => {
-    res.send(' SHOW profile/:id');
-});
+// // GET profile show /profile/:id
+// app.get('/profile/:id', (req, res) => {
+//     res.send(' SHOW profile/:id');
+// });
 
-// GET profile edit /profile/edit/:id
-app.get('/profile/edit/:id', (req, res) => {
-    res.send(' EDIT profile/edit/:id');
-});
+// // GET profile edit /profile/edit/:id
+// app.get('/profile/edit/:id', (req, res) => {
+//     res.send(' EDIT profile/edit/:id');
+// });
 
-// PUT profile update /profile/:id
-app.put('/profile/:id', (req, res) => {
-    res.send('UPDATE profile/:id');
-});
+// // PUT profile update /profile/:id
+// app.put('/profile/:id', (req, res) => {
+//     res.send('UPDATE profile/:id');
+// });
 
-// DELETE profile destroy /profile/:id
-app.delete('/profile/:id', (req, res) => {
-    res.send('DELETE profile/:id');
-});
+// // DELETE profile destroy /profile/:id
+// app.delete('/profile/:id', (req, res) => {
+//     res.send('DELETE profile/:id');
+// });
 
 
 
@@ -199,7 +196,7 @@ app.delete('/details/:id', (req, res) => {
     res.send('DESTROY details/:id');
 });
 
-
+//app.use('views/profile', profile);
 app.use('/auth', require('./controllers/auth'));
 
 
