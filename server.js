@@ -13,7 +13,7 @@ const db = require('./models');
 //const { all } = require('sequelize/types/lib/operators');
 const path = require('path');
 
-const profile = require('./routes/profile');
+
 
 
 const publickey = process.env.PUBLIC_KEY;
@@ -23,10 +23,9 @@ const SECRET_SESSION = process.env.SECRET_SESSION;
 let ts = new Date().getTime();
 const hash = md5(ts + privatekey + publickey);
 
-
 app.set('view engine', 'ejs');
 
-app.use('./routes/profile', profile);
+
 app.use(methodOverride('_method'));
 app.use(require('morgan')('dev'));
 app.use(express.urlencoded({ extended: false }));
@@ -47,157 +46,94 @@ app.use((req, res, next) => {
   next();
 });
 
+
 //////////////////// ***** ROUTES ***** /////////////////////
 
+////GET ROUTES ////
 
 // GET index
-app.get('/', isLoggedIn, (req, res) => {
-  const { id, name, email } = req.user.get();
+app.get('/', (req, res) => {
   res.render('index');
 });
 
-
-
-// GET profile index /profile
-app.get('/profile', isLoggedIn, (req, res) => {
-  const { id, name, email } = req.user.get();
-  res.render('profile', { id, name, email });
-});
-
-// // GET profile new /profile/new
-// app.get('/profile/new', (req, res) => {
-//     res.send('NEW profile/new');
-// });
-
-// // POST profile create /profile
-// app.post('/profile', (req, res) => {
-//     res.send('CREATE profile');
-// });
-
-// // GET profile show /profile/:id
-// app.get('/profile/:id', (req, res) => {
-//     res.send(' SHOW profile/:id');
-// });
-
-// // GET profile edit /profile/edit/:id
-// app.get('/profile/edit/:id', (req, res) => {
-//     res.send(' EDIT profile/edit/:id');
-// });
-
-// // PUT profile update /profile/:id
-// app.put('/profile/:id', (req, res) => {
-//     res.send('UPDATE profile/:id');
-// });
-
-// // DELETE profile destroy /profile/:id
-// app.delete('/profile/:id', (req, res) => {
-//     res.send('DELETE profile/:id');
-// });
-
-
-
-
 // GET comics index /comics
-app.get('/comics', isLoggedIn, (req, res) => {
-    const { id, name, email } = req.user.get();
-    const marvelUrl = 'https://gateway.marvel.com:443/v1/public/comics'
+app.get('/comics', (req, res) => {
+    //const search = req.query.search
+    const marvelUrl = 'https://gateway.marvel.com/v1/public/comics'
     axios.get(marvelUrl, {
         params: {
             ts: ts,
             apikey: publickey,
             hash: hash,
         }
-    })
-    .then(response => {
+    }).then(response => {
         let data = response.data.data.results;
-        console.log(data[0].id);
+        console.log(data[1].id);
         let comic;
         let comicImgs = [];
         for (let i = 0; i < data.length; i++) {
-            // console.log(data[i].images);
+            console.log(data[i].images);
             comic = data[i].images;
             comic.map((images) => {
                 const comicData = {};
                 //console.log(`${images.path}.${images.extension}`);
                 comicData.comicImg = `${images.path}.${images.extension}`;
                 comicData.id = data[i].id;
+                console.log(comicData);
                 comicImgs.push(comicData);
             })
-        } console.log(comicImgs);
+        } 
         res.render('comics', { 'data': comicImgs });
     }) 
+ });
+
+// GET comics show /comicsId
+app.get('/comicsId', (req, res) => {
+    res.render('comicsId');
 });
 
-//GET comics new /comics/new
-app.get('/comics/new', (req, res) => {
-    res.send('NEW comics/new');
-});
+// POST create /comicsId
+app.post('/comicId', (req, res) => {
+    db.comicbooks.create({
+      title: req.body.title,
+      image: req.body.image,
+      description: req.body.description
+    })
+    .then((post) => {
+      res.redirect('/comics')
+    })
+  });
+  
+  // PUT 
+  app.put('/comics:id', (req, res) => {
+    db.comcicbooks.update(
+      req.body,
+      {
+        where: { id: req.params.id }
+      }
+    )
+    .then((updatedRows) => {
+      console.log('success', updatedRows)
+      res.redirect('/comics/' + req.params.id)
+    })
+  })
 
-//POST comics create /comics
-app.post('/comics', (req, res) => {
-    res.send('CREATE comics');
-});
-
-// GET comics show /comics/:id
-app.get('/comics/:id', (req, res) => {
-    res.send('SHOW comics/:id');
-});
-
-// GET comics edit /comics/edit/:id
-app.get('/comics/edit/:id', (req, res) => {
-    res.send('EDIT comics/edit/:id');
-});
-
-// PUT comics update /comics/:id
-app.put('/comics/:id', (req, res) => {
-    res.send('UPDATE comics/:id');
-});
-
-// DELETE comics destroy /comics/:id
-app.delete('/comics/:id', (req, res) => {
-    res.send('DESTROY comics/:id');
-});
+// GET profile index /profile
+app.get('/profile', isLoggedIn, (req, res) => {
+      const { id, name, email } = req.user.get();
+      res.render('profile', {id, name, email} );
+    });
 
 
 
 
-// GET details index /details
-app.get('/details', isLoggedIn, (req, res) => {
-    const { id, name, email } = req.user.get();
-    res.render('INDEX /details', { id, name, email });
-});
 
-// GET details new /details/new
-app.get('/details/new', (req, res) => {
-    res.send('NEW details/new');
-});
 
-// POST details create /details 
-app.post('/details', (req, res) => {
-    res.send('CREATE details');
-});
 
-// GET details show /details/:id
-app.get('/details/:id', (req, res) => {
-    res.send('SHOW details/:id');
-});
 
-//GET details edit /details/edit/:id
-app.get('/details/edit/:id', (req, res) => {
-    res.send('EDIT details/edit/:id');
-});
-
-// PUT details update /details/:id
-app.put('/details/:id', (req, res) => {
-    res.send('UPDATE details/:id');
-});
-// DELETE details destroy /details/:id
-app.delete('/details/:id', (req, res) => {
-    res.send('DESTROY details/:id');
-});
-
-//app.use('views/profile', profile);
 app.use('/auth', require('./controllers/auth'));
+
+
 
 
 const PORT = process.env.PORT || 3000;
