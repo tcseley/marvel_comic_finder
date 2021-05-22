@@ -43,6 +43,7 @@ app.use((req, res, next) => {
   next();
 });
 
+//const router = require("./auth");
 // app.use('/results', require('./controllers/results'));
 // app.use('/details', require('./controllers/details'));
 // app.use('/favorites', require('./controllers/favorites'));
@@ -81,7 +82,6 @@ app.get('/results', isLoggedIn, (req, res) => {
                 comicData.comicImg = `${images.path}.${images.extension}`;
                 comicData.id = data[i].id;
                 comicImgs.push(comicData);
-    
             })
         } console.log(comicImgs);
         res.render('results', { 'data': comicImgs });
