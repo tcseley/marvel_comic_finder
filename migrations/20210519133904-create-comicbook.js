@@ -11,24 +11,24 @@ module.exports = {
       title: {
         type: Sequelize.STRING
       },
-      creators: {
-        type: Sequelize.STRING
-      },
-      issueNumber: {
-        type: Sequelize.INTEGER
-      },
+      // creators: {
+      //   type: Sequelize.STRING
+      // },
+      // issueNumber: {
+      //   type: Sequelize.INTEGER
+      // },
       description: {
-        type: Sequelize.STRING
+        type: Sequelize.TEXT
       },
       image: {
         type: Sequelize.STRING
       },
-      series: {
-        type: Sequelize.STRING
-      },
-      year: {
-        type: Sequelize.INTEGER
-      },
+      // series: {
+      //   type: Sequelize.STRING
+      // },
+      // year: {
+      //   type: Sequelize.INTEGER
+      // },
       // // superheroId: {
       // //   type: Sequelize.INTEGER
       // },

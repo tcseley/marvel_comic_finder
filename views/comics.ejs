@@ -3,8 +3,8 @@
 
 <section class="comic-images-container">
     <% data.forEach(function(image) { %>
-      
-      <img src= <%= image.comicImg%> />
-   
+      <a href="/details/<%= image.id%>">
+         <img src= <%= image.comicImg%> />
+      </a>
     <% }) %>
-  </section>
+</section>

@@ -1,2 +1,23 @@
 <h1>Comic Info</h1>
 
+<%= comic.title %>
+
+<% if (comic.description) { %>
+    <%=comic.description%>
+    <%} else { %>
+    Nothin' here...
+    <% } %>
+
+<img src="<%= comic.images[0].path %>.<%= comic.images[0].extension %>" alt="">
+
+<form action="/new" method="POST">
+    <input type="submit" value="Faves">
+    <input name="title" type="text" value="<%=comic.title%>" hidden />
+    <input name="image" type="text" value="<%= comic.images[0].path %>.<%= comic.images[0].extension %>" hidden />
+    <% if (comic.description) { %>
+        <input name="description" type="text" value="<%=comic.description%>" hidden />
+        <%} else { %>
+        <input name="description" type="text" value="Nothin' here..." hidden />
+        <% } %>
+</form>
+

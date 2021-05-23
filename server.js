@@ -12,6 +12,7 @@ const methodOverride = require('method-override')
 const db = require('./models');
 //const { all } = require('sequelize/types/lib/operators');
 const path = require('path');
+const { response } = require('express');
 
 
 
@@ -88,21 +89,54 @@ app.get('/comics', (req, res) => {
  });
 
 // GET comics show /comicsId
-app.get('/comicsId', (req, res) => {
-    res.render('comicsId');
+// app.get('/comicsId', (req, res) => {
+//     res.render('comicsId');
+// });
+app.get('/details/:id', async (req, res) => {
+    let info;
+    const marvelUrl = await `https://gateway.marvel.com/v1/public/comics/${req.params.id}`
+    axios.get(marvelUrl, {
+        params: {
+            ts: ts,
+            apikey: publickey,
+            hash: hash,
+        }
+    }).then (response => {
+        console.log(response.data.data.results[0]);
+        info = response.data.data.results[0]
+    }).then(response => {
+        console.log(info)
+        
+        res.render('comicId', { comic: info });
+    }).catch(error => {
+        console.log(error);
+    })
+    //console.log(req.params.id);
 });
 
-// POST create /comicsId
-app.post('/comicId', (req, res) => {
+app.post('/new', (req, res) => {
     db.comicbooks.create({
-      title: req.body.title,
-      image: req.body.image,
-      description: req.body.description
+        title: req.body.title,
+        image: req.body.image,
+        description: req.body.description
     })
     .then((post) => {
-      res.redirect('/comics')
+    res.redirect('/comics')
     })
-  });
+})
+
+
+// // POST create /comicsId
+// app.post('/comicId', (req, res) => {
+//     db.comicbooks.create({
+//       title: req.body.title,
+//       image: req.body.image,
+//       description: req.body.description
+//     })
+//     .then((post) => {
+//       res.redirect('/comics')
+//     })
+//   });
   
   // PUT 
   app.put('/comics:id', (req, res) => {
