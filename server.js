@@ -57,8 +57,9 @@ app.get('/', (req, res) => {
 
 // GET comics index /comics
 app.get('/comics', (req, res) => {
-    //const search = req.query.search
-    const marvelUrl = `https://gateway.marvel.com/v1/public/comics`
+    const search = req.query.search;
+    const marvelUrl = `https://gateway.marvel.com/v1/public/comics?`
+    console.log(search);
     axios.get(marvelUrl, {
         params: {
             ts: ts,
@@ -107,10 +108,16 @@ app.get('/details/:id', async (req, res) => {
     })
 });
 
-app.post('/new', (req, res) => {
+app.get('/favorites', (req, res) => {
+    res.render('favorites');
+});
+
+//Add to a favorites collection
+app.post('/new', isLoggedIn, (req, res) => {
+    //const { id, name, email } = req.user.get();
     db.comicbooks.create({
         title: req.body.title,
-        digitalId: req.body.digitalID,
+        digitalId: req.body.digitalId,
         creators: req.body.creators,
         series: req.body.series,
         year: req.body.year,
@@ -118,12 +125,30 @@ app.post('/new', (req, res) => {
         description: req.body.description
     })
     .then((post) => {
-    res.redirect('/comics')
+    res.redirect('favorites')
     })
 })
 
+  //DELETE destroy comicsId  - delete a favorite
+app.delete('/delete', isLoggedIn, (req, res) => {
+    const { id, name, email } = req.user.delete();
+    db.comicbooks.destroy({
+        title: req.body.title,
+        digitalId: req.body.digitalId,
+        creators: req.body.creators,
+        series: req.body.series,
+        year: req.body.year,
+        image: req.body.image,
+        description: req.body.description
+    })
+    .then((post) => {
+    res.redirect('/comics', {id, name, email})
+    })
+});
+
 // GET show /comicsId - show all favorites from a user collection
-app.get('/show', (req, res) => {
+app.get('/show', isLoggedIn, (req, res) => {
+    const { id, name, email } = req.user.get();
     db.comicbooks.findAll({
       where: { id: req.params.id },
       include: [db.user]
@@ -131,24 +156,12 @@ app.get('/show', (req, res) => {
     .then((favorite) => {
       if (!favorite) throw Error()
       console.log(comicbooks.user)
-      res.render('comics/show', { favortites: comics })
+      res.render('favorites', {id, name, email}, { favorites: comics })
     })
     .catch((error) => {
       console.log(error)
     })
   })
-
-  //DELETE destroy comicsId  - delete a favorite
-app.delete('/delete', (req, res) => {
-    db.comicbooks.destroy({
-        title: req.body.title,
-        image: req.body.image,
-        description: req.body.description
-    })
-    .then((post) => {
-    res.redirect('/comics')
-    })
-});
 
 // GET profile index /profile
 app.get('/profile', isLoggedIn, (req, res) => {

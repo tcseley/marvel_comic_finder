@@ -1,17 +1,5 @@
 <h1>Favorite Comics</h1>
 
-//Show "favorited" comcis
+//Show "favorited" comics
 //option to update some text or delete "favorite"
 //Probably should copy below and paste into /comicId for /comicId/:id/delete
-<form action="" method="DELETE">
-    <input type="submit" value="Delete">
-    <input name="title" type="text" value="" hidden />
-    <input name="image" type="text" value="" hidden />
-    <% if (comic.description) { %>
-        <input name="description" type="text" value="<%=comic.description%>" hidden />
-        <%} else { %>
-        <input name="description" type="text" value="Nothin' here..." hidden />
-        <% } %>
-
-</form>
-
