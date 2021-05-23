@@ -170,10 +170,21 @@ app.delete('/delete/:id', isLoggedIn, (req, res) => {
 
 // GET profile index /profile
 app.get('/profile', isLoggedIn, (req, res) => {
-      const { id, name, email } = req.user.get();
-      res.render('profile', {id, name, email} );
-    });
-
+  const { id, name, email } = req.user.get();
+  res.render('profile', {id, name, email} );
+});
+app.put('/profile', isLoggedIn, (req, res) => {
+    const { id, name, email } = req.user.get();
+    db.user.update({
+        name: req.body.name
+        }, {
+        where: {
+        id: id
+        }
+       }).then(numRowsChanged=>{
+        res.render('profile', {id, name, email} );
+       });
+});
 // // POST create /comicsId
 // app.post('/comicId', (req, res) => {
 //     db.comicbooks.create({
