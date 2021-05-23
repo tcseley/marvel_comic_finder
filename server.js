@@ -109,12 +109,23 @@ app.get('/details/:id', async (req, res) => {
 });
 
 app.get('/favorites', (req, res) => {
-    res.render('favorites');
+    const { id, name, email } = req.user.get();
+    db.comicbooks.findAll({
+      where: { userId: id },
+      //include: [db.user]
+    })
+    .then((favorite) => {
+      if (!favorite) throw Error()
+        res.render('favorites', { favorites: favorite })
+    })
+    .catch((error) => {
+      console.log(error)
+    })
 });
 
 //Add to a favorites collection
 app.post('/new', isLoggedIn, (req, res) => {
-    //const { id, name, email } = req.user.get();
+    const { id, name, email } = req.user.get();
     db.comicbooks.create({
         title: req.body.title,
         digitalId: req.body.digitalId,
@@ -122,7 +133,8 @@ app.post('/new', isLoggedIn, (req, res) => {
         series: req.body.series,
         year: req.body.year,
         image: req.body.image,
-        description: req.body.description
+        description: req.body.description,
+        userId: id
     })
     .then((post) => {
     res.redirect('favorites')

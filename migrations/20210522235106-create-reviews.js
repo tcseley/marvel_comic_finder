@@ -14,7 +14,7 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
-      user_Id: {
+      comicbooksId: {
         type: Sequelize.INTEGER
       },
       createdAt: {

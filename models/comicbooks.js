@@ -10,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      models.comicbooks.belongsToMany(models.user, { through: "collection" });
-      models.comicbooks.belongsToMany(models.superhero, {through: "appearances"});
+    models.comicbooks.belongsTo(models.user)
+    models.comicbooks.hasMany(models.reviews)
       // define association here
     }
   };
@@ -23,9 +23,9 @@ module.exports = (sequelize, DataTypes) => {
     image: DataTypes.STRING,
     description: DataTypes.TEXT,
     series: DataTypes.STRING,
-    year: DataTypes.STRING
+    year: DataTypes.STRING,
     //superheroId: DataTypes.INTEGER,
-    //userId: DataTypes.INTEGER
+    userId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'comicbooks',

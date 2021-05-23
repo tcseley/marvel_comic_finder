@@ -1,5 +1,6 @@
 <h1>Favorite Comics</h1>
 
-//Show "favorited" comics
-//option to update some text or delete "favorite"
-//Probably should copy below and paste into /comicId for /comicId/:id/delete
+
+<% favorites.forEach(function(comicbook) { %>
+    <li><%= comicbook.title %></li>
+    <% }); %>

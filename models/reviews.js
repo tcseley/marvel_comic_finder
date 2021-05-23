@@ -10,13 +10,14 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
+      models.reviews.belongsTo(models.comicbooks)
       // define association here
     }
   };
   reviews.init({
     title: DataTypes.STRING,
     description: DataTypes.STRING,
-    user_Id: DataTypes.INTEGER
+    comicbooksId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'reviews',
