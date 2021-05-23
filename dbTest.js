@@ -151,4 +151,7 @@
 // });
 
 // In Comic model:
-//Title, issue#, description, series.name, image    
+//Title, issue#, description, series.name, image
+
+
+// (comic.image) <<ejs syntax to pull the other image objects on the page and display.

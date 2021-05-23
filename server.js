@@ -138,25 +138,47 @@ app.post('/new', (req, res) => {
 //     })
 //   });
   
-  // PUT 
-  app.put('/comics:id', (req, res) => {
-    db.comcicbooks.update(
-      req.body,
-      {
-        where: { id: req.params.id }
-      }
-    )
-    .then((updatedRows) => {
-      console.log('success', updatedRows)
-      res.redirect('/comics/' + req.params.id)
-    })
-  })
 
-// GET profile index /profile
-app.get('/profile', isLoggedIn, (req, res) => {
-      const { id, name, email } = req.user.get();
-      res.render('profile', {id, name, email} );
-    });
+//DELETE comics destroy /comics/:id
+// app.delete('', (req, res) => {
+//     res.send('DESTROY comics/:id');
+// });
+
+
+// app.put('/faves', (req, res) => {
+//     updated = [];
+//     let updateComic;
+//     const 
+
+// })
+
+// db.comicbooks.update({
+
+// })
+
+
+
+
+
+//   // PUT 
+//   app.put('/comics:id', (req, res) => {
+//     db.comcicbooks.update(
+//       req.body,
+//       {
+//         where: { id: req.params.id }
+//       }
+//     )
+//     .then((updatedRows) => {
+//       console.log('success', updatedRows)
+//       res.redirect('/comics/' + req.params.id)
+//     })
+//   })
+
+// // GET profile index /profile
+// app.get('/profile', isLoggedIn, (req, res) => {
+//       const { id, name, email } = req.user.get();
+//       res.render('profile', {id, name, email} );
+//     });
 
 
 
