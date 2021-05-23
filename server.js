@@ -50,8 +50,6 @@ app.use((req, res, next) => {
 
 //////////////////// ***** ROUTES ***** /////////////////////
 
-////GET ROUTES ////
-
 // GET index
 app.get('/', (req, res) => {
   res.render('index');
@@ -60,7 +58,7 @@ app.get('/', (req, res) => {
 // GET comics index /comics
 app.get('/comics', (req, res) => {
     //const search = req.query.search
-    const marvelUrl = 'https://gateway.marvel.com/v1/public/comics'
+    const marvelUrl = `https://gateway.marvel.com/v1/public/comics`
     axios.get(marvelUrl, {
         params: {
             ts: ts,
@@ -88,10 +86,6 @@ app.get('/comics', (req, res) => {
     }) 
  });
 
-// GET comics show /comicsId
-// app.get('/comicsId', (req, res) => {
-//     res.render('comicsId');
-// });
 app.get('/details/:id', async (req, res) => {
     let info;
     const marvelUrl = await `https://gateway.marvel.com/v1/public/comics/${req.params.id}`
@@ -111,12 +105,15 @@ app.get('/details/:id', async (req, res) => {
     }).catch(error => {
         console.log(error);
     })
-    //console.log(req.params.id);
 });
 
 app.post('/new', (req, res) => {
     db.comicbooks.create({
         title: req.body.title,
+        digitalId: req.body.digitalID,
+        creators: req.body.creators,
+        series: req.body.series,
+        year: req.body.year,
         image: req.body.image,
         description: req.body.description
     })
@@ -125,6 +122,39 @@ app.post('/new', (req, res) => {
     })
 })
 
+// GET show /comicsId - show all favorites from a user collection
+app.get('/show', (req, res) => {
+    db.comicbooks.findAll({
+      where: { id: req.params.id },
+      include: [db.user]
+    })
+    .then((favorite) => {
+      if (!favorite) throw Error()
+      console.log(comicbooks.user)
+      res.render('comics/show', { favortites: comics })
+    })
+    .catch((error) => {
+      console.log(error)
+    })
+  })
+
+  //DELETE destroy comicsId  - delete a favorite
+app.delete('/delete', (req, res) => {
+    db.comicbooks.destroy({
+        title: req.body.title,
+        image: req.body.image,
+        description: req.body.description
+    })
+    .then((post) => {
+    res.redirect('/comics')
+    })
+});
+
+// GET profile index /profile
+app.get('/profile', isLoggedIn, (req, res) => {
+      const { id, name, email } = req.user.get();
+      res.render('profile', {id, name, email} );
+    });
 
 // // POST create /comicsId
 // app.post('/comicId', (req, res) => {
@@ -149,15 +179,6 @@ app.post('/new', (req, res) => {
 //     updated = [];
 //     let updateComic;
 //     const 
-
-// })
-
-// db.comicbooks.update({
-
-// })
-
-
-
 
 
 //   // PUT 

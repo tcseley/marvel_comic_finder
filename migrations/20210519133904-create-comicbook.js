@@ -11,9 +11,12 @@ module.exports = {
       title: {
         type: Sequelize.STRING
       },
-      // creators: {
-      //   type: Sequelize.STRING
-      // },
+      creators: {
+        type: Sequelize.STRING
+      },
+      digitalId: {
+        type: Sequelize.STRING
+      },
       // issueNumber: {
       //   type: Sequelize.INTEGER
       // },
@@ -23,12 +26,12 @@ module.exports = {
       image: {
         type: Sequelize.STRING
       },
-      // series: {
-      //   type: Sequelize.STRING
-      // },
-      // year: {
-      //   type: Sequelize.INTEGER
-      // },
+      series: {
+        type: Sequelize.STRING
+      },
+      year: {
+        type: Sequelize.STRING
+      },
       // // superheroId: {
       // //   type: Sequelize.INTEGER
       // },

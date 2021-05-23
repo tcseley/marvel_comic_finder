@@ -1,18 +1,27 @@
 <h1>Comic Info</h1>
 
-<%= comic.title %>
-
-<% if (comic.description) { %>
+<section id="comcic-title">
+    <b>Title:</b> <%= comic.title %></section>
+<section id="comic-description">
+    <b>What's the story?</b>
+    <% if (comic.description) { %>
     <%=comic.description%>
     <%} else { %>
-    Nothin' here...
+    Nothin' posted...
     <% } %>
+</section>
 
+<section id="comic-cover">
 <img src="<%= comic.images[0].path %>.<%= comic.images[0].extension %>" alt="">
+</section>
 
 <form action="/new" method="POST">
-    <input type="submit" value="Faves">
+    <input id="faves" type="submit" value="Yeah Dawg!">
     <input name="title" type="text" value="<%=comic.title%>" hidden />
+    <input name="creators" type="text" value="<%=comic.creators%>" hidden />
+    <input name="digitalId" type="number" value="<%=comic.digitalId%>" hidden />
+    <input name="series" type="text" value="<%=comic.series%>" hidden />
+    <input name="year" type="number" value="<%=comic.year%>" hidden />
     <input name="image" type="text" value="<%= comic.images[0].path %>.<%= comic.images[0].extension %>" hidden />
     <% if (comic.description) { %>
         <input name="description" type="text" value="<%=comic.description%>" hidden />
@@ -21,8 +30,13 @@
         <% } %>
 </form>
 
+<form action="/comics" method="PUT">
+    <input type="submit" value="Nah dawg">
+    <input type="title" type="text" value="<%=comic.title%>" hidden>
+    <input type="image" type="text" value="<%= comic.images[0].path %>.<%= comic.images[0].extension %>" hidden />
+</form>
 
-<form action="POST" action="">
-    <input type="submit" value="Update">
 
+<form action="/" method="PUT">
+    <input type="submit" value="Dumpster Fire">
 </form>
