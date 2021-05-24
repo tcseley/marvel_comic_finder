@@ -40,6 +40,7 @@ app.get('/comics', (req, res) => {
 
 The search parameters were fine tuned to dig into the data containers Marvel set up.
 
+
 ```javascript
 app.get('/comics', (req, res) => {
     const marvelUrl = `https://gateway.marvel.com/v1/public${req.url}`
@@ -64,6 +65,7 @@ app.get('/comics', (req, res) => {
         res.render('comics', { 'data': comicResults });
     })
 ```
+
 
 With the amount of information coming back, there is a lot to work with. The possibilities are wide for dispaying info, and relating results to other properties, like finding associated comics or characters connected to the comic book title. For comic book lovers, and those interested in Marvel characters, the data received through the API can be tailored to however I would like to show or relate information.
 
