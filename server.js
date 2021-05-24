@@ -14,9 +14,7 @@ const db = require('./models');
 const path = require('path');
 const { response } = require('express');
 
-
-
-
+// Marvel API access
 const publickey = process.env.PUBLIC_KEY;
 const privatekey = process.env.PRIVATE_KEY;
 const SECRET_SESSION = process.env.SECRET_SESSION;
@@ -24,8 +22,8 @@ const SECRET_SESSION = process.env.SECRET_SESSION;
 let ts = new Date().getTime();
 const hash = md5(ts + privatekey + publickey);
 
-app.set('view engine', 'ejs');
 
+app.set('view engine', 'ejs');
 
 app.use(methodOverride('_method'));
 app.use(require('morgan')('dev'));
@@ -50,12 +48,12 @@ app.use((req, res, next) => {
 
 //////////////////// ***** ROUTES ***** /////////////////////
 
-// GET index
+// GET index 
 app.get('/', (req, res) => {
   res.render('index');
 });
 
-// GET comics index /comics
+// GET comics /comics
 app.get('/comics', (req, res) => {
     const search = req.query.search;
     const marvelUrl = `https://gateway.marvel.com/v1/public/comics?`
@@ -87,6 +85,7 @@ app.get('/comics', (req, res) => {
     }) 
  });
 
+ // GET details comics/details/:id
 app.get('/details/:id', async (req, res) => {
     let info;
     const marvelUrl = await `https://gateway.marvel.com/v1/public/comics/${req.params.id}`
@@ -108,6 +107,7 @@ app.get('/details/:id', async (req, res) => {
     })
 });
 
+// Get favorites collection /favorites
 app.get('/favorites', (req, res) => {
     const { id, name, email } = req.user.get();
     db.comicbooks.findAll({
@@ -123,7 +123,7 @@ app.get('/favorites', (req, res) => {
     })
 });
 
-//Add to a favorites collection
+// Post add to a favorites collection
 app.post('/new', isLoggedIn, (req, res) => {
     const { id, name, email } = req.user.get();
     db.comicbooks.create({
@@ -141,7 +141,7 @@ app.post('/new', isLoggedIn, (req, res) => {
     })
 })
 
-  //DELETE destroy comicsId  - delete a favorite
+// DELETE destroy a favorite comicsId
 app.delete('/delete/:id', isLoggedIn, (req, res) => {
     db.comicbooks.destroy({
         where: { id: req.params.id },
@@ -151,23 +151,6 @@ app.delete('/delete/:id', isLoggedIn, (req, res) => {
     })
 });
 
-// GET show /comicsId - show all favorites from a user collection
-// app.get('/show', isLoggedIn, (req, res) => {
-//     const { id, name, email } = req.user.get();
-//     db.comicbooks.findAll({
-//       where: { id: req.params.id },
-//       include: [db.user]
-//     })
-//     .then((favorite) => {
-//       if (!favorite) throw Error()
-//       console.log(comicbooks.user)
-//       res.render('favorites', {id, name, email}, { favorites: comics })
-//     })
-//     .catch((error) => {
-//       console.log(error)
-//     })
-//   })
-
 // GET profile index /profile
 app.get('/profile', isLoggedIn, (req, res) => {
   const { id, name, email } = req.user.get();
@@ -176,70 +159,18 @@ app.get('/profile', isLoggedIn, (req, res) => {
 app.put('/profile', isLoggedIn, (req, res) => {
     const { id, name, email } = req.user.get();
     db.user.update({
-        name: req.body.name
+        name: req.body.name,
         }, {
         where: {
-        id: id
+        id: id, 
         }
        }).then(numRowsChanged=>{
         res.render('profile', {id, name, email} );
-       });
+    });
 });
-// // POST create /comicsId
-// app.post('/comicId', (req, res) => {
-//     db.comicbooks.create({
-//       title: req.body.title,
-//       image: req.body.image,
-//       description: req.body.description
-//     })
-//     .then((post) => {
-//       res.redirect('/comics')
-//     })
-//   });
-  
-
-//DELETE comics destroy /comics/:id
-// app.delete('', (req, res) => {
-//     res.send('DESTROY comics/:id');
-// });
-
-
-// app.put('/faves', (req, res) => {
-//     updated = [];
-//     let updateComic;
-//     const 
-
-
-//   // PUT 
-//   app.put('/comics:id', (req, res) => {
-//     db.comcicbooks.update(
-//       req.body,
-//       {
-//         where: { id: req.params.id }
-//       }
-//     )
-//     .then((updatedRows) => {
-//       console.log('success', updatedRows)
-//       res.redirect('/comics/' + req.params.id)
-//     })
-//   })
-
-// // GET profile index /profile
-// app.get('/profile', isLoggedIn, (req, res) => {
-//       const { id, name, email } = req.user.get();
-//       res.render('profile', {id, name, email} );
-//     });
-
-
-
-
-
-
 
 
 app.use('/auth', require('./controllers/auth'));
-
-
 
 
 const PORT = process.env.PORT || 3000;

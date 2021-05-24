@@ -1,6 +1,7 @@
 <h1>Favorite Comics</h1>
 
 
+
 <% favorites.forEach(function(comicbook) { %>
     <li><%= comicbook.title %></li>
     <a href="/favorites/<%= comicbook.id%>">
@@ -10,3 +11,7 @@
         <input type="submit" value="Trash it!">
     </form>
     <% }); %>
+
+    <footer>
+        <p>Data provided by Marvel. © 2014 Marvel</p>
+    </footer>

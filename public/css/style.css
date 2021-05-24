@@ -1,3 +1,7 @@
+body {
+  background: darkgrey;
+}
+
 nav ul li {
   text-decoration: none;
   display: inline-block;
@@ -6,6 +10,10 @@ nav ul li {
 
 h1 {
   color: rgb(0, 102, 255);
+}
+
+h3 {
+  color:blue;
 }
 
 .comic-images-container a {
