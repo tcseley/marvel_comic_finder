@@ -1,17 +1,16 @@
-# Comic Book Keeper
+# Comic Book Finder
 
-> User stories: Since I have a large comic book collection, I'd like to be able to upload an image and some info on each book to a site, and find connections to other stories that the character would be in. It would be nice to see these comics in relation to other issues I've never heard of.
+> User story: Since I have a large comic book collection and I love comics, I'd like to be able to search for a comicbook, and find details on the story. It would be nice to see these comicc, and find other issues I've never heard of.
 
-The Marvel Universe is vast. If we focus on comics there is a treasure trove of series, both large and small, that include characters we know, and ones that are waiting to be read. Many times issues get set aside and forgotten, or a series concludes and we are left in the dark. So what if someone could upload a profile of a comcic they have, and find related issues, or even new series with the same characters, maybe a guest apperence in an entirely different time line? This could help connect the dots and spark futher interest in reading.
-
+The Marvel Universe is vast. There is a treasure trove of series that include characters we know, and ones we have not discovered yet. Many times issues get set aside and forgotten, or a series concludes long after we have moved on. Finding comics with a search feature could spark further interest in reading.
 
 # HOW TO USE
 
-A user can search their favorite comics, and find that comic in the database. They can see some info on the book, like characters, creator, events, and if it is part of a series. The main goal here is to find info on related comics, either from that same series or from the main character appearing in other series. 
+A user can search their favorite comics, and find that comic in the Marvel database. They can see some info on the book, like characters, creator, events, and if it is part of a series. The main goal is to find info and save the comic in a user account. Search through the home page for comic book titles and a results page will display the query.
 
-## SPLASH SCREEN
+### HOME PAGE
 
-(img)
+![Marvel](img/marvel_display.png)
 
 # HOW IT WORKS
 
