@@ -31,18 +31,18 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(__dirname + '/public'));
 app.use(layouts);
 app.use(session({
-  secret: SECRET_SESSION,
-  resave: false,
-  saveUninitialized: true
+    secret: SECRET_SESSION,
+    resave: false,
+    saveUninitialized: true
 }));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use((req, res, next) => {
-  console.log(res.locals);
-  res.locals.alerts = req.flash();
-  res.locals.currentUser = req.user;
-  next();
+    console.log(res.locals);
+    res.locals.alerts = req.flash();
+    res.locals.currentUser = req.user;
+    next();
 });
 
 
@@ -50,14 +50,13 @@ app.use((req, res, next) => {
 
 // GET index 
 app.get('/', (req, res) => {
-  res.render('index');
+    res.render('index');
 });
 
 // GET comics /comics
 app.get('/comics', (req, res) => {
-    const search = req.query.search;
-    const marvelUrl = `https://gateway.marvel.com/v1/public/comics?`
-    console.log(search);
+    // console.log(req.url)
+    const marvelUrl = `https://gateway.marvel.com/v1/public${req.url}`
     axios.get(marvelUrl, {
         params: {
             ts: ts,
@@ -66,26 +65,21 @@ app.get('/comics', (req, res) => {
         }
     }).then(response => {
         let data = response.data.data.results;
-        console.log(data[1].id);
-        let comic;
-        let comicImgs = [];
+        let comicResults = [];
+        
         for (let i = 0; i < data.length; i++) {
-            console.log(data[i].images);
-            comic = data[i].images;
-            comic.map((images) => {
-                const comicData = {};
-                //console.log(`${images.path}.${images.extension}`);
-                comicData.comicImg = `${images.path}.${images.extension}`;
-                comicData.id = data[i].id;
-                console.log(comicData);
-                comicImgs.push(comicData);
-            })
-        } 
-        res.render('comics', { 'data': comicImgs });
-    }) 
- });
+            const comicData = {};
+            comicData.id = data[i].id;
+            console.log(comicData.id);
+            comicsImgs = data[i].thumbnail;
+            comicData.comicImg = `${comicsImgs.path}.${comicsImgs.extension}`;
+            comicResults.push(comicData);
+        }
+        res.render('comics', { 'data': comicResults });
+    })
+});
 
- // GET details comics/details/:id
+// GET details comics/details/:id
 app.get('/details/:id', async (req, res) => {
     let info;
     const marvelUrl = await `https://gateway.marvel.com/v1/public/comics/${req.params.id}`
@@ -95,12 +89,12 @@ app.get('/details/:id', async (req, res) => {
             apikey: publickey,
             hash: hash,
         }
-    }).then (response => {
+    }).then(response => {
         console.log(response.data.data.results[0]);
         info = response.data.data.results[0]
     }).then(response => {
         console.log(info)
-        
+
         res.render('comicId', { comic: info });
     }).catch(error => {
         console.log(error);
@@ -111,16 +105,16 @@ app.get('/details/:id', async (req, res) => {
 app.get('/favorites', (req, res) => {
     const { id, name, email } = req.user.get();
     db.comicbooks.findAll({
-      where: { userId: id },
-      //include: [db.user]
+        where: { userId: id },
+        //include: [db.user]
     })
-    .then((favorite) => {
-      if (!favorite) throw Error()
-        res.render('favorites', { favorites: favorite })
-    })
-    .catch((error) => {
-      console.log(error)
-    })
+        .then((favorite) => {
+            if (!favorite) throw Error()
+            res.render('favorites', { favorites: favorite })
+        })
+        .catch((error) => {
+            console.log(error)
+        })
 });
 
 // Post add to a favorites collection
@@ -136,9 +130,9 @@ app.post('/new', isLoggedIn, (req, res) => {
         description: req.body.description,
         userId: id
     })
-    .then((post) => {
-    res.redirect('favorites')
-    })
+        .then((post) => {
+            res.redirect('favorites')
+        })
 })
 
 // DELETE destroy a favorite comicsId
@@ -146,26 +140,26 @@ app.delete('/delete/:id', isLoggedIn, (req, res) => {
     db.comicbooks.destroy({
         where: { id: req.params.id },
     })
-    .then((post) => {
-    res.redirect('/favorites')
-    })
+        .then((post) => {
+            res.redirect('/favorites')
+        })
 });
 
 // GET profile index /profile
 app.get('/profile', isLoggedIn, (req, res) => {
-  const { id, name, email } = req.user.get();
-  res.render('profile', {id, name, email} );
+    const { id, name, email } = req.user.get();
+    res.render('profile', { id, name, email });
 });
 app.put('/profile', isLoggedIn, (req, res) => {
     const { id, name, email } = req.user.get();
     db.user.update({
         name: req.body.name,
-        }, {
+    }, {
         where: {
-        id: id, 
+            id: id,
         }
-       }).then(numRowsChanged=>{
-        res.render('profile', {id, name, email} );
+    }).then(numRowsChanged => {
+        res.render('profile', { id, name, email });
     });
 });
 
@@ -175,7 +169,7 @@ app.use('/auth', require('./controllers/auth'));
 
 const PORT = process.env.PORT || 3000;
 const server = app.listen(PORT, () => {
-  console.log(`With great power, comes great responsibility on port ${PORT} `);
+    console.log(`With great power, comes great responsibility on port ${PORT} `);
 });
 
 module.exports = server;

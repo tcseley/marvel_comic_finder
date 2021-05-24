@@ -23,6 +23,13 @@ Marvel's api is robust and rich with lots of information. The details provided o
 To get connect to the Marvel Universe, the URL had to include the public API key, a time stamp, and a hash -- a combination of the public, private keys and time stamp. There's a few different ways to do this, and I choose the following:
 
 ```javascript
+const publickey = process.env.PUBLIC_KEY;
+const privatekey = process.env.PRIVATE_KEY;
+const SECRET_SESSION = process.env.SECRET_SESSION;
+
+let ts = new Date().getTime();
+const hash = md5(ts + privatekey + publickey);
+
 const marvelUrl = `https://gateway.marvel.com/v1/public/comics?`
     axios.get(marvelUrl, {
         params: {
@@ -35,24 +42,14 @@ const marvelUrl = `https://gateway.marvel.com/v1/public/comics?`
 The search parameters were fine tuned to dig into the data containers Marvel set up.
 
 ```javascript
-let data = response.data.data.results;
-        console.log(data[1].id);
-        let comic;
-        let comicImgs = [];
-        for (let i = 0; i < data.length; i++) {
-            console.log(data[i].images);
-            comic = data[i].images;
-            comic.map((images) => {
-                const comicData = {};
-                comicData.comicImg = `${images.path}.${images.extension}`;
-                comicData.id = data[i].id;
-                console.log(comicData);
-                comicImgs.push(comicData);
-            })
-        } 
+
 ```
 
 With the amount of information coming back, there is a lot to work with. The possibilities are wide for dispaying info, and relating results to other properties, like finding associated comics or characters connected to the comic book title. For comic book lovers, and those interested in Marvel characters, the data received through the API can be tailored to however I would like to show or relate information.
+
+To install the app, fork and clone from the git repository. Sign up for a gree developer account with Marvel at https://developer.marvel.com. Install dependencies through `npm install` and run sequelize to migrate the databases.
+
+
 
 
 ## FUTURE CONSIDERATIONS

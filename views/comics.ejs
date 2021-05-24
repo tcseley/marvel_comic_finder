@@ -1,13 +1,15 @@
-<h3>Searched from the Marvel Universe</h3>
+<div class="page-intro">
+  <h3>Searched from the Marvel Universe</h3>
+  <h5>Give some love to our superhero literature</h5>
+</div>
 
-<h5>Give some love to our superhero literature</h5>
 
 <section class="comic-images-container">
-    <% data.forEach(function(image) { %>
-      <a href="/details/<%= image.id%>">
-         <img src= <%= image.comicImg%> />
-      </a>
-    <% }) %>
+  <% data.forEach(function(image) { %>
+    <a href="/details/<%= image.id%>">
+      <img src=<%= image.comicImg%> />
+  </a>
+  <% }) %>
 </section>
 
 

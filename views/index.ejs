@@ -1,14 +1,17 @@
-<h3>Welcome to the portal into the Marvel Universe</h3>
-<p>The movies are great.    
-<p>Well, some of them.</p>
-<p>But let's take it back to the literature where all that fanciness originates.</p>
-<hr>
-<p>Use the search to find comic book title or your favorite superhero.</p>
+<div class='welcome'>
+    <h3>Welcome to the portal into the Marvel Universe</h3>
+    <p>The movies are great.</p>
+    <p>Well, some of them.</p>
+    <p>But let's take it back to the literature where all that fanciness originates.</p>
+    <p>Use the search to find comic book title or your favorite superhero.</p>
 
-<!--Work on drop down button-->
-<form action="/comics" method="GET">
-    <label for="search">Search</label>
-    <input id="search" type="text" name="search">
-    <input type="submit" value="'nuff said">
-</form>
+    <!--Work on drop down button-->
+    <form action="/comics" method="GET">
+        <!-- <label for="title">Search</label> -->
+        <div class="comic-search">
+            <input id="search" type="text" name="title">
+            <input class="marvelBtn" type="submit" value="'nuff said">
+        </div>
 
+    </form>
+</div>
