@@ -27,10 +27,9 @@ const publickey = process.env.PUBLIC_KEY;
 const privatekey = process.env.PRIVATE_KEY;
 const SECRET_SESSION = process.env.SECRET_SESSION;
 
-let ts = new Date().getTime();
-const hash = md5(ts + privatekey + publickey);
-
-const marvelUrl = `https://gateway.marvel.com/v1/public/comics?`
+app.get('/comics', (req, res) => {
+    // console.log(req.url)
+    const marvelUrl = `https://gateway.marvel.com/v1/public${req.url}`
     axios.get(marvelUrl, {
         params: {
             ts: ts,
@@ -42,7 +41,28 @@ const marvelUrl = `https://gateway.marvel.com/v1/public/comics?`
 The search parameters were fine tuned to dig into the data containers Marvel set up.
 
 ```javascript
-
+app.get('/comics', (req, res) => {
+    const marvelUrl = `https://gateway.marvel.com/v1/public${req.url}`
+    axios.get(marvelUrl, {
+        params: {
+            ts: ts,
+            apikey: publickey,
+            hash: hash,
+        }
+    }).then(response => {
+        let data = response.data.data.results;
+        let comicResults = [];
+        
+        for (let i = 0; i < data.length; i++) {
+            const comicData = {};
+            comicData.id = data[i].id;
+            console.log(comicData.id);
+            comicsImgs = data[i].thumbnail;
+            comicData.comicImg = `${comicsImgs.path}.${comicsImgs.extension}`;
+            comicResults.push(comicData);
+        }
+        res.render('comics', { 'data': comicResults });
+    })
 ```
 
 With the amount of information coming back, there is a lot to work with. The possibilities are wide for dispaying info, and relating results to other properties, like finding associated comics or characters connected to the comic book title. For comic book lovers, and those interested in Marvel characters, the data received through the API can be tailored to however I would like to show or relate information.
