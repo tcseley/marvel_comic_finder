@@ -15,7 +15,7 @@
 <img src="<%= comic.images[0].path %>.<%= comic.images[0].extension %>" alt="">
 </section>
 
-<form action="/new" method="POST">
+<form class="comic-like" action="/new" method="POST">
     <input id="faves" type="submit" value="Yeah Dawg!">
     <input name="title" type="text" value="<%=comic.title%>" hidden />
     <input name="creators" type="text" value="<%=comic.creators%>" hidden />
@@ -30,15 +30,10 @@
         <% } %>
 </form>
 
-<form action="/comics" method="PUT">
+<form class="comic-nolike" action="/comics" method="PUT">
     <input type="submit" value="Nah dawg">
     <input type="title" type="text" value="<%=comic.title%>" hidden>
     <input type="image" type="text" value="<%= comic.images[0].path %>.<%= comic.images[0].extension %>" hidden />
-</form>
-
-
-<form action="/" method="PUT">
-    <input type="submit" value="Dumpster Fire">
 </form>
 
 <footer>
